@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diajar Auto Layout Playground</title>
+    <!-- Memuat font Inter dengan berbagai ketebalan -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 1. COLOR STYLES & KEMENKEU THEME */
+        :root {
+            /* Warna Kemenkeu */
+            --kemenkeu-blue: #005FAC;
+            --kemenkeu-gold: #FCB813;
+            
+            /* Visual Hierarchy Colors */
+            --color-pekat: #121212; 
+            --color-sedang: #5f6368; 
+            --color-subtle: #f1f3f4; 
+
+            /* Layout & Neutral Colors */
+            --neutral-white: #ffffff;
+            --bg-dark: #121212;
+            --bg-panel: #1e1e1e;
+            --bg-card: #2d2d2d;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --border-color: #3d3d3d;
+            
+            /* Layout Grid Simulator */
+            --grid-color: rgba(242, 169, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-size: 16px; 
+            line-height: 24px;
+        }
+
+        /* 2. TEXT STYLES & HIERARCHY */
+        .weight-bold { font-weight: 700; }
+        .weight-semibold { font-weight: 600; }
+        .weight-medium { font-weight: 500; }
+        .weight-regular { font-weight: 400; }
+        .weight-light { font-weight: 300; }
+
+        .size-large { font-size: 30px; line-height: 36px; }
+        .size-medium { font-size: 24px; line-height: 32px; }
+        .size-small { font-size: 16px; line-height: 24px; }
+        .size-xsmall { font-size: 14px; line-height: 20px; }
+
+        /* AREA KEPALA (HEADER) */
+        header {
+            padding: 16px 24px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: var(--kemenkeu-gold);
+            font-size: 20px;
+        }
+
+        /* TATA LETAK RUANG KERJA */
+        .workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* SIMULASI LAYOUT GRID */
+        .layout-grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            padding: 0 40px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .layout-grid-overlay.active { opacity: 1; }
+        .grid-column { background-color: var(--grid-color); height: 100%; }
+
+        /* AREA KANVAS */
+        .canvas-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .preview-section {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+            background: var(--bg-panel);
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--kemenkeu-gold);
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* HIERARKI VISUAL DEMO */
+        .hierarchy-demo {
+            background: #ffffff;
+            color: var(--color-pekat);
+            padding: 24px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .demo-row {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--color-subtle);
+        }
+
+        .demo-row:last-child { border-bottom: none; }
+
+        .color-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 6px;
+            margin-right: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .bg-pekat { background: var(--color-pekat); color: #fff; }
+        .bg-sedang { background: var(--color-sedang); color: #fff; }
+        .bg-subtle { background: var(--color-subtle); color: var(--color-pekat); border: 1px solid #ddd; }
+
+        /* UX LAWS CARD */
+        .ux-laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .ux-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .ux-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--kemenkeu-gold);
+        }
+
+        .ux-card h3 { color: var(--kemenkeu-gold); margin-bottom: 8px; }
+        .ux-card p { color: var(--text-muted); font-size: 14px; line-height: 22px; }
+
+        /* GAYA INPUT FIELD */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .input-label { color: var(--text-muted); font-weight: 500; }
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .input-field:hover { border-color: #555; }
+        .input-field:focus { border-color: var(--kemenkeu-gold); box-shadow: 0 0 0 3px rgba(242, 169, 0, 0.2); }
+        .input-error { border-color: #f44336; }
+        .input-error:focus { box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.2); }
+        .error-message { color: #f44336; font-size: 12px; margin-top: -4px; }
+
+        /* GAYA TOMBOL & NAVBAR */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-kemenkeu { background: var(--kemenkeu-blue); color: var(--neutral-white); }
+        .btn-kemenkeu:hover { background: #003380; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 35, 102, 0.3); }
+        .btn-kemenkeu:active { transform: translateY(0); }
+
+        .btn-outline { background: transparent; color: var(--kemenkeu-gold); border-color: var(--kemenkeu-gold); }
+        .btn-outline:hover { background: rgba(242, 169, 0, 0.1); transform: translateY(-2px); }
+        .btn-outline:active { transform: translateY(0); }
+
+        .navbar-demo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--kemenkeu-blue);
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .nav-brand { font-weight: 700; color: var(--kemenkeu-gold); font-size: 18px; }
+        .nav-menu { display: flex; gap: 24px; align-items: center; }
+        .nav-item { color: var(--neutral-white); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+        .nav-item:hover { color: var(--kemenkeu-gold); }
+
+        /* WADAH AUTO LAYOUT INTERAKTIF */
+        .auto-layout-container {
+            background: var(--bg-card);
+            border: 2px dashed var(--kemenkeu-gold);
+            border-radius: 8px;
+            display: flex;
+            min-height: 200px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .layout-item {
+            background: var(--kemenkeu-blue);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        /* PANEL INSPEKTUR */
+        .inspector-panel {
+            width: 340px;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .inspector-header {
+            padding: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--kemenkeu-gold);
+        }
+
+        .property-group { padding: 16px; border-bottom: 1px solid var(--border-color); }
+        .property-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .property-label { font-size: 12px; color: var(--text-muted); width: 45%; }
+        .property-control { width: 55%; }
+
+        select, input[type="range"] {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 4px;
+            border: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--kemenkeu-gold);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* SWITCH UNTUK LAYOUT GRID */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px; width: 16px;
+            left: 4px; bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--kemenkeu-gold); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* POP-UP NOTIFIKASI */
+        .toast-popup {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--kemenkeu-blue);
+            color: #ffffff;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .toast-popup.show { bottom: 40px; }
+        .toast-icon {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="weight-bold">Materi Desain UI, UX & Auto Layout</h1>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <span class="size-xsmall">Tampilkan Layout Grid</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="grid-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <div class="workspace">
+        
+        <!-- Hamparan Layout Grid -->
+        <div class="layout-grid-overlay" id="grid-overlay">
+            <div class="grid-column"></div><div class="grid-column"></div>
+            <div class="grid-column"></div><div class="grid-column"></div>
+            <div class="grid-column"></div><div class="grid-column"></div>
+            <div class="grid-column"></div><div class="grid-column"></div>
+            <div class="grid-column"></div><div class="grid-column"></div>
+            <div class="grid-column"></div><div class="grid-column"></div>
+        </div>
+
+        <div class="canvas-area">
+            
+            <!-- BAGIAN 1: HIERARKI VISUAL -->
+            <div class="preview-section">
+                <h2 class="section-title size-medium weight-bold">1. Praktik Hierarki Visual (Tipografi & Warna)</h2>
+                
+                <div class="hierarchy-demo">
+                    <div class="demo-row">
+                        <h3 class="size-small weight-bold" style="margin-bottom: 12px;">A. Tingkatan Warna (Color)</h3>
+                        <div>
+                            <div class="color-box bg-pekat" onclick="showToast('Warna Pekat digunakan untuk teks utama')">Pekat (Hitam)</div>
+                            <div class="color-box bg-sedang" onclick="showToast('Warna Sedang digunakan untuk teks sekunder')">Sedang (Abu-abu)</div>
+                            <div class="color-box bg-subtle" onclick="showToast('Warna Subtle digunakan untuk batas atau latar')">Subtle (Terang)</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-row">
+                        <h3 class="size-small weight-bold" style="margin-bottom: 12px;">B. Tingkatan Ukuran & Line Height</h3>
+                        <div style="color: var(--color-pekat);">
+                            <div class="size-large weight-bold">Ukuran Besar (Judul Utama)</div>
+                            <div class="size-medium weight-semibold" style="color: var(--color-sedang); margin: 8px 0;">Ukuran Sedang (Subjudul)</div>
+                            <div class="size-small weight-regular" style="color: var(--color-sedang);">
+                                Ukuran Kecil. Paragraf ini menerapkan jarak antar baris (line-height) yang ideal agar pengguna mudah membaca teks panjang tanpa merasakan kelelahan pada mata.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-row">
+                        <h3 class="size-small weight-bold" style="margin-bottom: 12px;">C. Tingkatan Ketebalan (Weight)</h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px;" class="size-small">
+                            <span class="weight-bold">Teks Bold (700) - Penekanan Kuat</span>
+                            <span class="weight-medium">Teks Medium (500) - Penekanan Sedang</span>
+                            <span class="weight-regular">Teks Regular (400) - Paragraf Standar</span>
+                            <span class="weight-light">Teks Light (300) - Gaya Tipis Bersih</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 2: UX LAWS -->
+            <div class="preview-section">
+                <h2 class="section-title size-medium weight-bold">2. Hukum Dasar UX (UX Laws)</h2>
+                <div class="ux-laws-grid">
+                    <div class="ux-card" onclick="showToast('Hick\'s Law: Kurangi pilihan pengguna.')">
+                        <h3 class="weight-bold">Hick's Law</h3>
+                        <p>Waktu pengambilan keputusan meningkat seiring bertambahnya opsi. Batasi menu agar interaksi lebih ringkas.</p>
+                    </div>
+                    <div class="ux-card" onclick="showToast('Fitts\'s Law: Perbesar area sentuh.')">
+                        <h3 class="weight-bold">Fitts's Law</h3>
+                        <p>Tombol aksi utama harus besar dan mudah dijangkau. Waktu mencapai target bergantung pada jarak dan ukurannya.</p>
+                    </div>
+                    <div class="ux-card" onclick="showToast('Jakob\'s Law: Pakai desain umum.')">
+                        <h3 class="weight-bold">Jakob's Law</h3>
+                        <p>Pengguna menyukai tata letak yang sudah mereka kenali. Gunakan standar desain yang umum berlaku di industri.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 3: KOMPONEN INPUT & TOMBOL -->
+            <div class="preview-section">
+                <h2 class="section-title size-medium weight-bold">3. Praktik Komponen (Halaman Login)</h2>
+                <p class="size-xsmall" style="color: var(--text-muted); margin-bottom: 16px;">Simulasi Status: Default, Hover, Focus, dan Error.</p>
+                
+                <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px;">
+                    <div class="input-group">
+                        <label class="input-label size-xsmall">Nama Pengguna (Default)</label>
+                        <input type="text" class="input-field" placeholder="Masukkan nama Anda">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label size-xsmall">Kata Sandi (Error State)</label>
+                        <input type="password" class="input-field input-error" placeholder="Masukkan kata sandi" value="salah123">
+                        <span class="error-message">Kata sandi tidak sesuai.</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px;">
+                    <button class="btn btn-kemenkeu" onclick="showToast('Memproses Login...')">Login Sekarang</button>
+                    <button class="btn btn-outline" onclick="showToast('Membuka halaman pendaftaran.')">Daftar Akun</button>
+                </div>
+            </div>
+
+            <!-- BAGIAN 4: HEADER & NAVBAR -->
+            <div class="preview-section">
+                <h2 class="section-title size-medium weight-bold">4. Praktik Navbar (Auto Layout)</h2>
+                <div class="navbar-demo">
+                    <div class="nav-brand">Logo Kemenkeu</div>
+                    <div class="nav-menu">
+                        <a href="#" class="nav-item size-xsmall">Beranda</a>
+                        <a href="#" class="nav-item size-xsmall">Layanan</a>
+                        <a href="#" class="nav-item size-xsmall">Informasi</a>
+                        <button class="btn btn-outline size-xsmall" style="padding: 8px 16px;" onclick="showToast('Menu masuk ditekan')">Masuk</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 5: AUTO LAYOUT PLAYGROUND -->
+            <div class="preview-section">
+                <h2 class="section-title size-medium weight-bold">5. Eksplorasi Auto Layout Dasar</h2>
+                <div class="auto-layout-container" id="playground">
+                    <div class="layout-item size-small">Elemen 1</div>
+                    <div class="layout-item size-small" style="background: var(--kemenkeu-gold); color: #121212;">Elemen 2</div>
+                    <div class="layout-item size-small">Elemen 3</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PANEL INSPEKTUR AUTO LAYOUT -->
+        <div class="inspector-panel">
+            <div class="inspector-header">Properti Auto Layout</div>
+            
+            <div class="property-group">
+                <div class="property-row">
+                    <div class="property-label">Direction</div>
+                    <div class="property-control">
+                        <select id="ctrl-direction">
+                            <option value="row">Horizontal (Row)</option>
+                            <option value="column">Vertical (Column)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="property-row">
+                    <div class="property-label">Wrap</div>
+                    <div class="property-control">
+                        <select id="ctrl-wrap">
+                            <option value="nowrap">No Wrap</option>
+                            <option value="wrap">Wrap</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-group">
+                <div class="property-row">
+                    <div class="property-label">Justify (X)</div>
+                    <div class="property-control">
+                        <select id="ctrl-justify">
+                            <option value="flex-start">Start</option>
+                            <option value="center">Center</option>
+                            <option value="flex-end">End</option>
+                            <option value="space-between">Space Between</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="property-row">
+                    <div class="property-label">Align (Y)</div>
+                    <div class="property-control">
+                        <select id="ctrl-align">
+                            <option value="stretch">Stretch</option>
+                            <option value="flex-start">Start</option>
+                            <option value="center">Center</option>
+                            <option value="flex-end">End</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-group">
+                <div class="property-row">
+                    <div class="property-label">Gap (<span id="val-gap">16</span>px)</div>
+                    <div class="property-control">
+                        <input type="range" id="ctrl-gap" min="0" max="64" value="16">
+                    </div>
+                </div>
+                <div class="property-row">
+                    <div class="property-label">Padding (<span id="val-padding">24</span>px)</div>
+                    <div class="property-control">
+                        <input type="range" id="ctrl-padding" min="0" max="64" value="24">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inspector-header" style="border-top: none; padding-top: 0;">
+                <button class="btn btn-kemenkeu" id="reset-layout-btn" style="width: 100%; padding: 8px;">Reset Layout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WADAH POP-UP NOTIFIKASI -->
+    <div class="toast-popup size-small" id="toast">
+        <div class="toast-icon">✓</div>
+        <span id="toast-message">Notifikasi muncul di sini</span>
+    </div>
+
+    <script>
+        // LOGIKA LAYOUT GRID OVERLAY
+        const gridToggle = document.getElementById('grid-toggle');
+        const gridOverlay = document.getElementById('grid-overlay');
+
+        gridToggle.addEventListener('change', function() {
+            if (this.checked) {
+                gridOverlay.classList.add('active');
+                showToast('Layout Grid diaktifkan.');
+            } else {
+                gridOverlay.classList.remove('active');
+                showToast('Layout Grid dinonaktifkan.');
+            }
+        });
+
+        // LOGIKA POP-UP NOTIFIKASI
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        let toastTimeout;
+
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // LOGIKA AUTO LAYOUT INTERAKTIF
+        const playground = document.getElementById('playground');
+        const ctrlDirection = document.getElementById('ctrl-direction');
+        const ctrlWrap = document.getElementById('ctrl-wrap');
+        const ctrlJustify = document.getElementById('ctrl-justify');
+        const ctrlAlign = document.getElementById('ctrl-align');
+        const ctrlGap = document.getElementById('ctrl-gap');
+        const ctrlPadding = document.getElementById('ctrl-padding');
+        const valGap = document.getElementById('val-gap');
+        const valPadding = document.getElementById('val-padding');
+        const resetLayoutBtn = document.getElementById('reset-layout-btn');
+
+        function updateLayout() {
+            playground.style.flexDirection = ctrlDirection.value;
+            playground.style.flexWrap = ctrlWrap.value;
+            playground.style.justifyContent = ctrlJustify.value;
+            playground.style.alignItems = ctrlAlign.value;
+            playground.style.gap = ctrlGap.value + 'px';
+            playground.style.padding = ctrlPadding.value + 'px';
+
+            valGap.textContent = ctrlGap.value;
+            valPadding.textContent = ctrlPadding.value;
+        }
+
+        const controls = [ctrlDirection, ctrlWrap, ctrlJustify, ctrlAlign, ctrlGap, ctrlPadding];
+        controls.forEach(control => {
+            control.addEventListener('input', updateLayout);
+        });
+
+        resetLayoutBtn.addEventListener('click', () => {
+            ctrlDirection.value = 'row';
+            ctrlWrap.value = 'nowrap';
+            ctrlJustify.value = 'flex-start';
+            ctrlAlign.value = 'stretch';
+            ctrlGap.value = 16;
+            ctrlPadding.value = 24;
+            updateLayout();
+            showToast('Auto Layout dikembalikan ke awal.');
+        });
+
+        // Inisialisasi awal
+        updateLayout();
+    </script>
+</body>
+</html>
