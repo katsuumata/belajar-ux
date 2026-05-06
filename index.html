@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diajar Auto Layout Playground</title>
-    <!-- Memuat font Inter dengan berbagai ketebalan -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Materi UI/UX & Auto Layout - Enhanced</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,70 +12,151 @@
             box-sizing: border-box;
         }
 
-        /* 1. COLOR STYLES & KEMENKEU THEME */
         :root {
-            /* Warna Kemenkeu */
-            --kemenkeu-blue: #005FAC;
-            --kemenkeu-gold: #FCB813;
+            /* Primary Colors - Blue & Yellow Theme */
+            --primary-blue: #0066FF;
+            --primary-blue-dark: #0052CC;
+            --primary-blue-light: #4D94FF;
+            --accent-yellow: #FFD60A;
+            --accent-yellow-dark: #FFC700;
             
-            /* Visual Hierarchy Colors */
-            --color-pekat: #121212; 
-            --color-sedang: #5f6368; 
-            --color-subtle: #f1f3f4; 
-
-            /* Layout & Neutral Colors */
-            --neutral-white: #ffffff;
-            --bg-dark: #121212;
-            --bg-panel: #1e1e1e;
-            --bg-card: #2d2d2d;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --border-color: #3d3d3d;
+            /* Neutral Colors */
+            --neutral-900: #0A0A0A;
+            --neutral-800: #1A1A1A;
+            --neutral-700: #2A2A2A;
+            --neutral-600: #404040;
+            --neutral-500: #666666;
+            --neutral-400: #999999;
+            --neutral-300: #CCCCCC;
+            --neutral-200: #E5E5E5;
+            --neutral-100: #F5F5F5;
+            --neutral-white: #FFFFFF;
             
-            /* Layout Grid Simulator */
-            --grid-color: rgba(242, 169, 0, 0.1);
+            /* Semantic Colors */
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --info: #3B82F6;
+            
+            /* Layout */
+            --header-height: 64px;
+            --sidebar-width: 360px;
+            --grid-gutter: 24px;
+            
+            /* Effects */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.25);
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--neutral-900);
+            color: var(--neutral-white);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            font-size: 16px; 
-            line-height: 24px;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
-        /* 2. TEXT STYLES & HIERARCHY */
-        .weight-bold { font-weight: 700; }
-        .weight-semibold { font-weight: 600; }
-        .weight-medium { font-weight: 500; }
-        .weight-regular { font-weight: 400; }
-        .weight-light { font-weight: 300; }
-
-        .size-large { font-size: 30px; line-height: 36px; }
-        .size-medium { font-size: 24px; line-height: 32px; }
-        .size-small { font-size: 16px; line-height: 24px; }
-        .size-xsmall { font-size: 14px; line-height: 20px; }
-
-        /* AREA KEPALA (HEADER) */
+        /* Header */
         header {
-            padding: 16px 24px;
-            background: var(--bg-panel);
-            border-bottom: 1px solid var(--border-color);
+            height: var(--header-height);
+            background: var(--neutral-800);
+            border-bottom: 1px solid var(--neutral-700);
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 100;
         }
 
-        header h1 {
-            color: var(--kemenkeu-gold);
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
             font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* TATA LETAK RUANG KERJA */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--neutral-700);
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        .toggle-label {
+            font-size: 12px;
+            color: var(--neutral-400);
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--neutral-600);
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-blue);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Workspace Layout */
         .workspace {
             display: flex;
             flex: 1;
@@ -84,455 +164,1017 @@
             position: relative;
         }
 
-        /* SIMULASI LAYOUT GRID */
-        .layout-grid-overlay {
+        /* Grid Overlay */
+        .grid-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
+            right: var(--sidebar-width);
             bottom: 0;
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
+            gap: var(--grid-gutter);
             padding: 0 40px;
             pointer-events: none;
-            z-index: 50;
+            z-index: 10;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .layout-grid-overlay.active { opacity: 1; }
-        .grid-column { background-color: var(--grid-color); height: 100%; }
+        .grid-overlay.active {
+            opacity: 1;
+        }
 
-        /* AREA KANVAS */
+        .grid-column {
+            background: linear-gradient(180deg, 
+                rgba(255, 214, 10, 0.1) 0%, 
+                rgba(255, 214, 10, 0.05) 100%);
+            border-left: 1px solid rgba(255, 214, 10, 0.2);
+            border-right: 1px solid rgba(255, 214, 10, 0.2);
+        }
+
+        /* Canvas Area */
         .canvas-area {
             flex: 1;
             padding: 40px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #1a1a1a;
+            background: var(--neutral-900);
             position: relative;
-            z-index: 1;
         }
 
-        .preview-section {
-            width: 100%;
-            max-width: 900px;
-            margin-bottom: 40px;
-            background: var(--bg-panel);
-            padding: 24px;
+        .canvas-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .canvas-area::-webkit-scrollbar-track {
+            background: var(--neutral-800);
+        }
+
+        .canvas-area::-webkit-scrollbar-thumb {
+            background: var(--neutral-600);
+            border-radius: 4px;
+        }
+
+        .canvas-area::-webkit-scrollbar-thumb:hover {
+            background: var(--neutral-500);
+        }
+
+        /* Section Card */
+        .section-card {
+            background: var(--neutral-800);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid var(--neutral-700);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--neutral-700);
+        }
+
+        .section-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
             border-radius: 8px;
-            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
         }
 
         .section-title {
-            color: var(--kemenkeu-gold);
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--neutral-white);
         }
 
-        /* HIERARKI VISUAL DEMO */
-        .hierarchy-demo {
-            background: #ffffff;
-            color: var(--color-pekat);
-            padding: 24px;
+        /* Typography Hierarchy Demo */
+        .typography-demo {
+            background: var(--neutral-white);
+            color: var(--neutral-900);
+            padding: 32px;
             border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .text-row {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .text-row:last-child {
+            border-bottom: none;
+        }
+
+        .text-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--neutral-500);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .h1-demo { font-size: 48px; font-weight: 800; line-height: 1.2; }
+        .h2-demo { font-size: 36px; font-weight: 700; line-height: 1.3; color: var(--neutral-700); }
+        .h3-demo { font-size: 24px; font-weight: 600; line-height: 1.4; color: var(--neutral-600); }
+        .body-demo { font-size: 16px; font-weight: 400; line-height: 1.6; color: var(--neutral-700); }
+        .small-demo { font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--neutral-500); }
+
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .color-swatch {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.05);
+        }
+
+        .color-preview {
+            height: 100px;
             display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .demo-row {
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--color-subtle);
-        }
-
-        .demo-row:last-child { border-bottom: none; }
-
-        .color-box {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 24px;
-            border-radius: 6px;
-            margin-right: 12px;
-            font-weight: 500;
-            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
         }
 
-        .bg-pekat { background: var(--color-pekat); color: #fff; }
-        .bg-sedang { background: var(--color-sedang); color: #fff; }
-        .bg-subtle { background: var(--color-subtle); color: var(--color-pekat); border: 1px solid #ddd; }
+        .color-info {
+            background: var(--neutral-700);
+            padding: 12px;
+        }
 
-        /* UX LAWS CARD */
-        .ux-laws-grid {
+        .color-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .color-code {
+            font-size: 11px;
+            color: var(--neutral-400);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* UX Laws Cards */
+        .ux-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .ux-card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            background: var(--neutral-700);
+            border-radius: 12px;
+            padding: 24px;
             cursor: pointer;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ux-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-yellow));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .ux-card:hover::before {
+            transform: scaleX(1);
         }
 
         .ux-card:hover {
             transform: translateY(-4px);
-            border-color: var(--kemenkeu-gold);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-blue);
         }
 
-        .ux-card h3 { color: var(--kemenkeu-gold); margin-bottom: 8px; }
-        .ux-card p { color: var(--text-muted); font-size: 14px; line-height: 22px; }
-
-        /* GAYA INPUT FIELD */
-        .input-group {
+        .ux-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+            border-radius: 12px;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 100%;
-            max-width: 300px;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
         }
 
-        .input-label { color: var(--text-muted); font-weight: 500; }
-        .input-field {
+        .ux-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent-yellow);
+        }
+
+        .ux-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--neutral-300);
+        }
+
+        /* Auto Layout Playground */
+        .layout-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .layout-type-btn {
+            padding: 12px 20px;
+            background: var(--neutral-700);
+            border: 2px solid var(--neutral-600);
+            border-radius: 8px;
+            color: var(--neutral-white);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .layout-type-btn:hover {
+            background: var(--neutral-600);
+            border-color: var(--primary-blue);
+        }
+
+        .layout-type-btn.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+        }
+
+        .playground-container {
+            background: var(--neutral-700);
+            border: 2px dashed var(--accent-yellow);
+            border-radius: 12px;
+            min-height: 300px;
+            padding: 24px;
+            display: flex;
+            transition: all 0.3s ease;
+        }
+
+        .playground-item {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            padding: 20px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: move;
+            position: relative;
+            box-shadow: var(--shadow-md);
+        }
+
+        .playground-item:nth-child(2) {
+            background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
+            color: var(--neutral-900);
+        }
+
+        .playground-item:nth-child(3) {
+            background: linear-gradient(135deg, var(--primary-blue-light), var(--primary-blue));
+        }
+
+        .playground-item:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Form Components */
+        .form-demo {
+            background: var(--neutral-700);
+            padding: 32px;
+            border-radius: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral-300);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
             width: 100%;
             padding: 12px 16px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            background: var(--neutral-800);
+            border: 2px solid var(--neutral-600);
+            border-radius: 8px;
+            color: var(--neutral-white);
             font-size: 14px;
+            font-family: 'Inter', sans-serif;
             transition: all 0.2s ease;
             outline: none;
         }
 
-        .input-field:hover { border-color: #555; }
-        .input-field:focus { border-color: var(--kemenkeu-gold); box-shadow: 0 0 0 3px rgba(242, 169, 0, 0.2); }
-        .input-error { border-color: #f44336; }
-        .input-error:focus { box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.2); }
-        .error-message { color: #f44336; font-size: 12px; margin-top: -4px; }
+        .form-input:hover {
+            border-color: var(--neutral-500);
+        }
 
-        /* GAYA TOMBOL & NAVBAR */
+        .form-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+        }
+
+        .form-input.error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input.success {
+            border-color: var(--success);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
         .btn {
             padding: 12px 24px;
-            border-radius: 6px;
-            border: 2px solid transparent;
+            border-radius: 8px;
+            border: none;
             font-weight: 600;
+            font-size: 14px;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
-            outline: none;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+            outline: none;
         }
 
-        .btn-kemenkeu { background: var(--kemenkeu-blue); color: var(--neutral-white); }
-        .btn-kemenkeu:hover { background: #003380; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 35, 102, 0.3); }
-        .btn-kemenkeu:active { transform: translateY(0); }
-
-        .btn-outline { background: transparent; color: var(--kemenkeu-gold); border-color: var(--kemenkeu-gold); }
-        .btn-outline:hover { background: rgba(242, 169, 0, 0.1); transform: translateY(-2px); }
-        .btn-outline:active { transform: translateY(0); }
-
-        .navbar-demo {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            background: var(--kemenkeu-blue);
-            border-radius: 8px;
-            width: 100%;
-        }
-
-        .nav-brand { font-weight: 700; color: var(--kemenkeu-gold); font-size: 18px; }
-        .nav-menu { display: flex; gap: 24px; align-items: center; }
-        .nav-item { color: var(--neutral-white); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
-        .nav-item:hover { color: var(--kemenkeu-gold); }
-
-        /* WADAH AUTO LAYOUT INTERAKTIF */
-        .auto-layout-container {
-            background: var(--bg-card);
-            border: 2px dashed var(--kemenkeu-gold);
-            border-radius: 8px;
-            display: flex;
-            min-height: 200px;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .layout-item {
-            background: var(--kemenkeu-blue);
+        .btn-primary {
+            background: var(--primary-blue);
             color: white;
-            padding: 16px 24px;
-            border-radius: 6px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            min-width: 80px;
         }
 
-        /* PANEL INSPEKTUR */
+        .btn-primary:hover {
+            background: var(--primary-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-yellow);
+            border: 2px solid var(--accent-yellow);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 214, 10, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            background: var(--neutral-700);
+            color: var(--neutral-white);
+        }
+
+        .btn-ghost:hover {
+            background: var(--neutral-600);
+        }
+
+        /* Sidebar/Inspector */
         .inspector-panel {
-            width: 340px;
-            background: var(--bg-panel);
-            border-left: 1px solid var(--border-color);
+            width: var(--sidebar-width);
+            background: var(--neutral-800);
+            border-left: 1px solid var(--neutral-700);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            z-index: 100;
+        }
+
+        .inspector-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .inspector-panel::-webkit-scrollbar-track {
+            background: var(--neutral-800);
+        }
+
+        .inspector-panel::-webkit-scrollbar-thumb {
+            background: var(--neutral-600);
+            border-radius: 3px;
         }
 
         .inspector-header {
-            padding: 16px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
-            color: var(--kemenkeu-gold);
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-700);
+            background: var(--neutral-800);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .property-group { padding: 16px; border-bottom: 1px solid var(--border-color); }
-        .property-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .property-label { font-size: 12px; color: var(--text-muted); width: 45%; }
-        .property-control { width: 55%; }
+        .inspector-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        select, input[type="range"] {
-            width: 100%;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            color: white;
-            padding: 8px;
-            border-radius: 4px;
+        .property-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--neutral-700);
+        }
+
+        .property-section-title {
             font-size: 12px;
-            outline: none;
+            font-weight: 700;
+            color: var(--neutral-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .property-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .property-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .property-label {
+            font-size: 13px;
+            color: var(--neutral-300);
+            font-weight: 500;
+        }
+
+        .property-control {
+            width: 50%;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--neutral-700);
+            border: 1px solid var(--neutral-600);
+            border-radius: 6px;
+            color: var(--neutral-white);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        select:hover,
+        input[type="number"]:hover {
+            border-color: var(--neutral-500);
+        }
+
+        select:focus,
+        input[type="number"]:focus {
+            border-color: var(--primary-blue);
         }
 
         input[type="range"] {
-            -webkit-appearance: none;
+            width: 100%;
             height: 4px;
-            border: none;
-            padding: 0;
-            margin-top: 8px;
+            background: var(--neutral-700);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
         }
-        
+
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 16px;
             height: 16px;
-            background: var(--kemenkeu-gold);
+            background: var(--primary-blue);
             border-radius: 50%;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        /* SWITCH UNTUK LAYOUT GRID */
-        .toggle-switch {
-            position: relative;
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--primary-blue-light);
+            transform: scale(1.2);
+        }
+
+        .range-value {
             display: inline-block;
-            width: 44px;
-            height: 24px;
+            min-width: 32px;
+            text-align: right;
+            font-size: 13px;
+            color: var(--accent-yellow);
+            font-weight: 600;
         }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--border-color);
-            transition: .4s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px; width: 16px;
-            left: 4px; bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--kemenkeu-gold); }
-        input:checked + .slider:before { transform: translateX(20px); }
 
-        /* POP-UP NOTIFIKASI */
-        .toast-popup {
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--neutral-800);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--neutral-700);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-yellow);
+        }
+
+        .modal-close {
+            background: var(--neutral-700);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            color: var(--neutral-300);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--neutral-600);
+            color: var(--neutral-white);
+        }
+
+        .modal-body {
+            color: var(--neutral-300);
+            line-height: 1.6;
+        }
+
+        .modal-example {
+            background: var(--neutral-700);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .modal-example-title {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        /* Toast Notification */
+        .toast {
             position: fixed;
             bottom: -100px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--kemenkeu-blue);
-            color: #ffffff;
+            background: var(--neutral-800);
+            color: var(--neutral-white);
             padding: 16px 24px;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
             transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 1000;
+            z-index: 2000;
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 500;
+            border: 1px solid var(--neutral-700);
+            max-width: 400px;
         }
 
-        .toast-popup.show { bottom: 40px; }
+        .toast.show {
+            bottom: 32px;
+        }
+
         .toast-icon {
-            background: rgba(255,255,255,0.2);
+            width: 32px;
+            height: 32px;
+            background: var(--primary-blue);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .inspector-panel {
+                position: fixed;
+                right: -100%;
+                top: var(--header-height);
+                bottom: 0;
+                z-index: 200;
+                transition: right 0.3s ease;
+            }
+
+            .inspector-panel.mobile-open {
+                right: 0;
+            }
+
+            .grid-overlay {
+                right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .canvas-area {
+                padding: 20px;
+            }
+
+            .section-card {
+                padding: 20px;
+            }
+
+            .ux-grid,
+            .layout-types {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Figma-style Icons */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Loading Animation */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading {
+            animation: spin 1s linear infinite;
         }
     </style>
 </head>
 <body>
-
     <header>
-        <h1 class="weight-bold">Materi Desain UI, UX & Auto Layout</h1>
-        <div style="display: flex; align-items: center; gap: 16px;">
-            <span class="size-xsmall">Tampilkan Layout Grid</span>
-            <label class="toggle-switch">
-                <input type="checkbox" id="grid-toggle">
-                <span class="slider"></span>
-            </label>
+        <div class="header-left">
+            <div class="logo">UI/UX Playground</div>
+        </div>
+        <div class="header-controls">
+            <div class="toggle-group">
+                <span class="toggle-label">Grid Layout</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="grid-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <button class="btn btn-ghost" id="mobile-inspector-toggle" style="display: none;">
+                ☰ Inspector
+            </button>
         </div>
     </header>
 
     <div class="workspace">
-        
-        <!-- Hamparan Layout Grid -->
-        <div class="layout-grid-overlay" id="grid-overlay">
-            <div class="grid-column"></div><div class="grid-column"></div>
-            <div class="grid-column"></div><div class="grid-column"></div>
-            <div class="grid-column"></div><div class="grid-column"></div>
-            <div class="grid-column"></div><div class="grid-column"></div>
-            <div class="grid-column"></div><div class="grid-column"></div>
-            <div class="grid-column"></div><div class="grid-column"></div>
+        <!-- Grid Overlay -->
+        <div class="grid-overlay" id="grid-overlay">
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
+            <div class="grid-column"></div>
         </div>
 
+        <!-- Canvas Area -->
         <div class="canvas-area">
-            
-            <!-- BAGIAN 1: HIERARKI VISUAL -->
-            <div class="preview-section">
-                <h2 class="section-title size-medium weight-bold">1. Praktik Hierarki Visual (Tipografi & Warna)</h2>
-                
-                <div class="hierarchy-demo">
-                    <div class="demo-row">
-                        <h3 class="size-small weight-bold" style="margin-bottom: 12px;">A. Tingkatan Warna (Color)</h3>
-                        <div>
-                            <div class="color-box bg-pekat" onclick="showToast('Warna Pekat digunakan untuk teks utama')">Pekat (Hitam)</div>
-                            <div class="color-box bg-sedang" onclick="showToast('Warna Sedang digunakan untuk teks sekunder')">Sedang (Abu-abu)</div>
-                            <div class="color-box bg-subtle" onclick="showToast('Warna Subtle digunakan untuk batas atau latar')">Subtle (Terang)</div>
+            <!-- Section 1: Typography -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <h2 class="section-title">Hierarki Tipografi</h2>
+                </div>
+                <div class="typography-demo">
+                    <div class="text-row">
+                        <div class="text-label">Heading 1 - Display</div>
+                        <div class="h1-demo">Judul Utama Halaman</div>
+                    </div>
+                    <div class="text-row">
+                        <div class="text-label">Heading 2 - Title</div>
+                        <div class="h2-demo">Subjudul Section</div>
+                    </div>
+                    <div class="text-row">
+                        <div class="text-label">Heading 3 - Subtitle</div>
+                        <div class="h3-demo">Judul Subsection</div>
+                    </div>
+                    <div class="text-row">
+                        <div class="text-label">Body - Paragraph</div>
+                        <div class="body-demo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Desain yang baik memperhatikan hierarki visual untuk memandu perhatian pengguna ke informasi yang paling penting.</div>
+                    </div>
+                    <div class="text-row">
+                        <div class="text-label">Small - Caption</div>
+                        <div class="small-demo">Teks kecil untuk metadata, keterangan, atau informasi pendukung.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Color System -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <h2 class="section-title">Sistem Warna</h2>
+                </div>
+                <div class="color-grid">
+                    <div class="color-swatch" onclick="copyColor('#0066FF')">
+                        <div class="color-preview" style="background: var(--primary-blue); color: white;">Primary</div>
+                        <div class="color-info">
+                            <div class="color-name">Blue Primary</div>
+                            <div class="color-code">#0066FF</div>
                         </div>
                     </div>
+                    <div class="color-swatch" onclick="copyColor('#FFD60A')">
+                        <div class="color-preview" style="background: var(--accent-yellow); color: var(--neutral-900);">Accent</div>
+                        <div class="color-info">
+                            <div class="color-name">Yellow Accent</div>
+                            <div class="color-code">#FFD60A</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch" onclick="copyColor('#10B981')">
+                        <div class="color-preview" style="background: var(--success); color: white;">Success</div>
+                        <div class="color-info">
+                            <div class="color-name">Success</div>
+                            <div class="color-code">#10B981</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch" onclick="copyColor('#EF4444')">
+                        <div class="color-preview" style="background: var(--error); color: white;">Error</div>
+                        <div class="color-info">
+                            <div class="color-name">Error</div>
+                            <div class="color-code">#EF4444</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch" onclick="copyColor('#0A0A0A')">
+                        <div class="color-preview" style="background: var(--neutral-900); color: white;">Dark</div>
+                        <div class="color-info">
+                            <div class="color-name">Neutral 900</div>
+                            <div class="color-code">#0A0A0A</div>
+                        </div>
+                    </div>
+                    <div class="color-swatch" onclick="copyColor('#FFFFFF')">
+                        <div class="color-preview" style="background: white; color: var(--neutral-900); border: 1px solid var(--neutral-700);">Light</div>
+                        <div class="color-info">
+                            <div class="color-name">White</div>
+                            <div class="color-code">#FFFFFF</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="demo-row">
-                        <h3 class="size-small weight-bold" style="margin-bottom: 12px;">B. Tingkatan Ukuran & Line Height</h3>
-                        <div style="color: var(--color-pekat);">
-                            <div class="size-large weight-bold">Ukuran Besar (Judul Utama)</div>
-                            <div class="size-medium weight-semibold" style="color: var(--color-sedang); margin: 8px 0;">Ukuran Sedang (Subjudul)</div>
-                            <div class="size-small weight-regular" style="color: var(--color-sedang);">
-                                Ukuran Kecil. Paragraf ini menerapkan jarak antar baris (line-height) yang ideal agar pengguna mudah membaca teks panjang tanpa merasakan kelelahan pada mata.
+            <!-- Section 3: UX Laws -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <h2 class="section-title">Hukum-Hukum UX</h2>
+                </div>
+                <div class="ux-grid">
+                    <div class="ux-card" onclick="showUXLaw('hicks')">
+                        <div class="ux-card-icon">⚡</div>
+                        <h3>Hick's Law</h3>
+                        <p>Waktu untuk mengambil keputusan meningkat seiring bertambahnya pilihan. Kurangi opsi untuk mempercepat interaksi.</p>
+                    </div>
+                    <div class="ux-card" onclick="showUXLaw('fitts')">
+                        <div class="ux-card-icon">🎯</div>
+                        <h3>Fitts's Law</h3>
+                        <p>Waktu untuk mencapai target bergantung pada jarak dan ukuran. Buat tombol penting lebih besar dan mudah dijangkau.</p>
+                    </div>
+                    <div class="ux-card" onclick="showUXLaw('jakob')">
+                        <div class="ux-card-icon">👥</div>
+                        <h3>Jakob's Law</h3>
+                        <p>Pengguna lebih suka antarmuka yang familiar. Gunakan pola desain yang sudah umum dikenal.</p>
+                    </div>
+                    <div class="ux-card" onclick="showUXLaw('miller')">
+                        <div class="ux-card-icon">🧠</div>
+                        <h3>Miller's Law</h3>
+                        <p>Rata-rata orang hanya dapat menyimpan 7±2 item dalam memori kerja. Kelompokkan informasi dalam chunk kecil.</p>
+                    </div>
+                    <div class="ux-card" onclick="showUXLaw('gestalt')">
+                        <div class="ux-card-icon">👁️</div>
+                        <h3>Gestalt Principles</h3>
+                        <p>Manusia cenderung mengelompokkan elemen visual berdasarkan kedekatan, kesamaan, dan kontinuitas.</p>
+                    </div>
+                    <div class="ux-card" onclick="showUXLaw('proximity')">
+                        <div class="ux-card-icon">📐</div>
+                        <h3>Law of Proximity</h3>
+                        <p>Elemen yang berdekatan dianggap sebagai kelompok. Gunakan spacing untuk menciptakan hubungan visual.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Form Components -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <h2 class="section-title">Komponen Form Interaktif</h2>
+                </div>
+                <div class="form-demo">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 24px;">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" placeholder="nama@email.com" id="email-input">
+                            <div class="success-message" id="email-success" style="display: none;">
+                                ✓ Email valid
                             </div>
                         </div>
-                    </div>
-
-                    <div class="demo-row">
-                        <h3 class="size-small weight-bold" style="margin-bottom: 12px;">C. Tingkatan Ketebalan (Weight)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 8px;" class="size-small">
-                            <span class="weight-bold">Teks Bold (700) - Penekanan Kuat</span>
-                            <span class="weight-medium">Teks Medium (500) - Penekanan Sedang</span>
-                            <span class="weight-regular">Teks Regular (400) - Paragraf Standar</span>
-                            <span class="weight-light">Teks Light (300) - Gaya Tipis Bersih</span>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input error" placeholder="Masukkan password" value="123">
+                            <div class="error-message">
+                                ✕ Password minimal 8 karakter
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-input" placeholder="Pilih username" id="username-input">
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- BAGIAN 2: UX LAWS -->
-            <div class="preview-section">
-                <h2 class="section-title size-medium weight-bold">2. Hukum Dasar UX (UX Laws)</h2>
-                <div class="ux-laws-grid">
-                    <div class="ux-card" onclick="showToast('Hick\'s Law: Kurangi pilihan pengguna.')">
-                        <h3 class="weight-bold">Hick's Law</h3>
-                        <p>Waktu pengambilan keputusan meningkat seiring bertambahnya opsi. Batasi menu agar interaksi lebih ringkas.</p>
-                    </div>
-                    <div class="ux-card" onclick="showToast('Fitts\'s Law: Perbesar area sentuh.')">
-                        <h3 class="weight-bold">Fitts's Law</h3>
-                        <p>Tombol aksi utama harus besar dan mudah dijangkau. Waktu mencapai target bergantung pada jarak dan ukurannya.</p>
-                    </div>
-                    <div class="ux-card" onclick="showToast('Jakob\'s Law: Pakai desain umum.')">
-                        <h3 class="weight-bold">Jakob's Law</h3>
-                        <p>Pengguna menyukai tata letak yang sudah mereka kenali. Gunakan standar desain yang umum berlaku di industri.</p>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="showToast('✓ Form berhasil disubmit!')">
+                            Submit Form
+                        </button>
+                        <button class="btn btn-secondary">
+                            Cancel
+                        </button>
+                        <button class="btn btn-ghost">
+                            Reset
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- BAGIAN 3: KOMPONEN INPUT & TOMBOL -->
-            <div class="preview-section">
-                <h2 class="section-title size-medium weight-bold">3. Praktik Komponen (Halaman Login)</h2>
-                <p class="size-xsmall" style="color: var(--text-muted); margin-bottom: 16px;">Simulasi Status: Default, Hover, Focus, dan Error.</p>
+            <!-- Section 5: Auto Layout Playground -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <h2 class="section-title">Auto Layout Playground</h2>
+                </div>
                 
-                <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px;">
-                    <div class="input-group">
-                        <label class="input-label size-xsmall">Nama Pengguna (Default)</label>
-                        <input type="text" class="input-field" placeholder="Masukkan nama Anda">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label size-xsmall">Kata Sandi (Error State)</label>
-                        <input type="password" class="input-field input-error" placeholder="Masukkan kata sandi" value="salah123">
-                        <span class="error-message">Kata sandi tidak sesuai.</span>
-                    </div>
+                <div class="layout-types">
+                    <button class="layout-type-btn active" data-layout="horizontal" onclick="setLayoutType('horizontal')">
+                        ↔️ Horizontal
+                    </button>
+                    <button class="layout-type-btn" data-layout="vertical" onclick="setLayoutType('vertical')">
+                        ↕️ Vertical
+                    </button>
+                    <button class="layout-type-btn" data-layout="grid" onclick="setLayoutType('grid')">
+                        ⊞ Grid
+                    </button>
+                    <button class="layout-type-btn" data-layout="freeform" onclick="setLayoutType('freeform')">
+                        ✨ Freeform
+                    </button>
                 </div>
 
-                <div style="display: flex; gap: 16px;">
-                    <button class="btn btn-kemenkeu" onclick="showToast('Memproses Login...')">Login Sekarang</button>
-                    <button class="btn btn-outline" onclick="showToast('Membuka halaman pendaftaran.')">Daftar Akun</button>
-                </div>
-            </div>
-
-            <!-- BAGIAN 4: HEADER & NAVBAR -->
-            <div class="preview-section">
-                <h2 class="section-title size-medium weight-bold">4. Praktik Navbar (Auto Layout)</h2>
-                <div class="navbar-demo">
-                    <div class="nav-brand">Logo Kemenkeu</div>
-                    <div class="nav-menu">
-                        <a href="#" class="nav-item size-xsmall">Beranda</a>
-                        <a href="#" class="nav-item size-xsmall">Layanan</a>
-                        <a href="#" class="nav-item size-xsmall">Informasi</a>
-                        <button class="btn btn-outline size-xsmall" style="padding: 8px 16px;" onclick="showToast('Menu masuk ditekan')">Masuk</button>
-                    </div>
+                <div class="playground-container" id="playground">
+                    <div class="playground-item">Item 1</div>
+                    <div class="playground-item">Item 2</div>
+                    <div class="playground-item">Item 3</div>
+                    <div class="playground-item">Item 4</div>
                 </div>
             </div>
-
-            <!-- BAGIAN 5: AUTO LAYOUT PLAYGROUND -->
-            <div class="preview-section">
-                <h2 class="section-title size-medium weight-bold">5. Eksplorasi Auto Layout Dasar</h2>
-                <div class="auto-layout-container" id="playground">
-                    <div class="layout-item size-small">Elemen 1</div>
-                    <div class="layout-item size-small" style="background: var(--kemenkeu-gold); color: #121212;">Elemen 2</div>
-                    <div class="layout-item size-small">Elemen 3</div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- PANEL INSPEKTUR AUTO LAYOUT -->
-        <div class="inspector-panel">
-            <div class="inspector-header">Properti Auto Layout</div>
-            
-            <div class="property-group">
+        <!-- Inspector Panel -->
+        <div class="inspector-panel" id="inspector-panel">
+            <div class="inspector-header">
+                <div class="inspector-title">⚙️ Layout Properties</div>
+            </div>
+
+            <div class="property-section">
+                <div class="property-section-title">Direction & Wrap</div>
                 <div class="property-row">
                     <div class="property-label">Direction</div>
                     <div class="property-control">
@@ -553,20 +1195,23 @@
                 </div>
             </div>
 
-            <div class="property-group">
+            <div class="property-section">
+                <div class="property-section-title">Alignment</div>
                 <div class="property-row">
-                    <div class="property-label">Justify (X)</div>
+                    <div class="property-label">Justify Content</div>
                     <div class="property-control">
                         <select id="ctrl-justify">
                             <option value="flex-start">Start</option>
                             <option value="center">Center</option>
                             <option value="flex-end">End</option>
                             <option value="space-between">Space Between</option>
+                            <option value="space-around">Space Around</option>
+                            <option value="space-evenly">Space Evenly</option>
                         </select>
                     </div>
                 </div>
                 <div class="property-row">
-                    <div class="property-label">Align (Y)</div>
+                    <div class="property-label">Align Items</div>
                     <div class="property-control">
                         <select id="ctrl-align">
                             <option value="stretch">Stretch</option>
@@ -578,49 +1223,82 @@
                 </div>
             </div>
 
-            <div class="property-group">
+            <div class="property-section">
+                <div class="property-section-title">Spacing</div>
                 <div class="property-row">
-                    <div class="property-label">Gap (<span id="val-gap">16</span>px)</div>
+                    <div class="property-label">Gap</div>
                     <div class="property-control">
                         <input type="range" id="ctrl-gap" min="0" max="64" value="16">
                     </div>
+                    <span class="range-value" id="val-gap">16</span>px
                 </div>
                 <div class="property-row">
-                    <div class="property-label">Padding (<span id="val-padding">24</span>px)</div>
+                    <div class="property-label">Padding</div>
                     <div class="property-control">
                         <input type="range" id="ctrl-padding" min="0" max="64" value="24">
                     </div>
+                    <span class="range-value" id="val-padding">24</span>px
                 </div>
             </div>
-            
-            <div class="inspector-header" style="border-top: none; padding-top: 0;">
-                <button class="btn btn-kemenkeu" id="reset-layout-btn" style="width: 100%; padding: 8px;">Reset Layout</button>
+
+            <div class="property-section">
+                <div class="property-section-title">Grid Settings</div>
+                <div class="property-row">
+                    <div class="property-label">Columns</div>
+                    <div class="property-control">
+                        <input type="number" id="ctrl-columns" min="1" max="6" value="2">
+                    </div>
+                </div>
+                <div class="property-row">
+                    <div class="property-label">Grid Gap</div>
+                    <div class="property-control">
+                        <input type="range" id="ctrl-grid-gap" min="0" max="48" value="16">
+                    </div>
+                    <span class="range-value" id="val-grid-gap">16</span>px
+                </div>
+            </div>
+
+            <div class="property-section">
+                <button class="btn btn-primary" id="reset-btn" style="width: 100%;">
+                    Reset to Default
+                </button>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 12px;" onclick="addPlaygroundItem()">
+                    + Add Item
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- WADAH POP-UP NOTIFIKASI -->
-    <div class="toast-popup size-small" id="toast">
+    <!-- Modal for UX Laws -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">UX Law</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
         <div class="toast-icon">✓</div>
-        <span id="toast-message">Notifikasi muncul di sini</span>
+        <div class="toast-message" id="toast-message">Notification</div>
     </div>
 
     <script>
-        // LOGIKA LAYOUT GRID OVERLAY
+        // Grid Toggle
         const gridToggle = document.getElementById('grid-toggle');
         const gridOverlay = document.getElementById('grid-overlay');
 
         gridToggle.addEventListener('change', function() {
-            if (this.checked) {
-                gridOverlay.classList.add('active');
-                showToast('Layout Grid diaktifkan.');
-            } else {
-                gridOverlay.classList.remove('active');
-                showToast('Layout Grid dinonaktifkan.');
-            }
+            gridOverlay.classList.toggle('active', this.checked);
+            showToast(this.checked ? '✓ Layout Grid aktif' : '✕ Layout Grid nonaktif');
         });
 
-        // LOGIKA POP-UP NOTIFIKASI
+        // Toast Function
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toast-message');
         let toastTimeout;
@@ -634,7 +1312,13 @@
             }, 3000);
         }
 
-        // LOGIKA AUTO LAYOUT INTERAKTIF
+        // Copy Color
+        function copyColor(color) {
+            navigator.clipboard.writeText(color);
+            showToast(`✓ Warna ${color} disalin!`);
+        }
+
+        // Auto Layout Controls
         const playground = document.getElementById('playground');
         const ctrlDirection = document.getElementById('ctrl-direction');
         const ctrlWrap = document.getElementById('ctrl-wrap');
@@ -642,40 +1326,376 @@
         const ctrlAlign = document.getElementById('ctrl-align');
         const ctrlGap = document.getElementById('ctrl-gap');
         const ctrlPadding = document.getElementById('ctrl-padding');
+        const ctrlColumns = document.getElementById('ctrl-columns');
+        const ctrlGridGap = document.getElementById('ctrl-grid-gap');
         const valGap = document.getElementById('val-gap');
         const valPadding = document.getElementById('val-padding');
-        const resetLayoutBtn = document.getElementById('reset-layout-btn');
+        const valGridGap = document.getElementById('val-grid-gap');
+        const resetBtn = document.getElementById('reset-btn');
+
+        let currentLayoutType = 'horizontal';
 
         function updateLayout() {
-            playground.style.flexDirection = ctrlDirection.value;
-            playground.style.flexWrap = ctrlWrap.value;
-            playground.style.justifyContent = ctrlJustify.value;
-            playground.style.alignItems = ctrlAlign.value;
-            playground.style.gap = ctrlGap.value + 'px';
-            playground.style.padding = ctrlPadding.value + 'px';
+            if (currentLayoutType === 'grid') {
+                playground.style.display = 'grid';
+                playground.style.gridTemplateColumns = `repeat(${ctrlColumns.value}, 1fr)`;
+                playground.style.gap = ctrlGridGap.value + 'px';
+                playground.style.padding = ctrlPadding.value + 'px';
+            } else if (currentLayoutType === 'freeform') {
+                playground.style.display = 'flex';
+                playground.style.flexWrap = 'wrap';
+                playground.style.gap = ctrlGap.value + 'px';
+                playground.style.padding = ctrlPadding.value + 'px';
+            } else {
+                playground.style.display = 'flex';
+                playground.style.flexDirection = ctrlDirection.value;
+                playground.style.flexWrap = ctrlWrap.value;
+                playground.style.justifyContent = ctrlJustify.value;
+                playground.style.alignItems = ctrlAlign.value;
+                playground.style.gap = ctrlGap.value + 'px';
+                playground.style.padding = ctrlPadding.value + 'px';
+            }
 
             valGap.textContent = ctrlGap.value;
             valPadding.textContent = ctrlPadding.value;
+            valGridGap.textContent = ctrlGridGap.value;
         }
 
-        const controls = [ctrlDirection, ctrlWrap, ctrlJustify, ctrlAlign, ctrlGap, ctrlPadding];
-        controls.forEach(control => {
-            control.addEventListener('input', updateLayout);
+        function setLayoutType(type) {
+            currentLayoutType = type;
+            
+            // Update button states
+            document.querySelectorAll('.layout-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-layout="${type}"]`).classList.add('active');
+
+            // Apply layout
+            switch(type) {
+                case 'horizontal':
+                    ctrlDirection.value = 'row';
+                    ctrlWrap.value = 'nowrap';
+                    break;
+                case 'vertical':
+                    ctrlDirection.value = 'column';
+                    ctrlWrap.value = 'nowrap';
+                    break;
+                case 'grid':
+                    // Grid layout handled in updateLayout
+                    break;
+                case 'freeform':
+                    // Freeform layout
+                    break;
+            }
+
+            updateLayout();
+            showToast(`✓ Layout: ${type.charAt(0).toUpperCase() + type.slice(1)}`);
+        }
+
+        // Add event listeners
+        [ctrlDirection, ctrlWrap, ctrlJustify, ctrlAlign, ctrlGap, ctrlPadding, ctrlColumns, ctrlGridGap].forEach(ctrl => {
+            ctrl.addEventListener('input', updateLayout);
         });
 
-        resetLayoutBtn.addEventListener('click', () => {
+        resetBtn.addEventListener('click', () => {
             ctrlDirection.value = 'row';
             ctrlWrap.value = 'nowrap';
             ctrlJustify.value = 'flex-start';
             ctrlAlign.value = 'stretch';
             ctrlGap.value = 16;
             ctrlPadding.value = 24;
+            ctrlColumns.value = 2;
+            ctrlGridGap.value = 16;
+            currentLayoutType = 'horizontal';
+            
+            document.querySelectorAll('.layout-type-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-layout="horizontal"]').classList.add('active');
+            
             updateLayout();
-            showToast('Auto Layout dikembalikan ke awal.');
+            showToast('✓ Layout direset ke default');
         });
 
-        // Inisialisasi awal
+        // Add Item
+        let itemCount = 4;
+        function addPlaygroundItem() {
+            itemCount++;
+            const newItem = document.createElement('div');
+            newItem.className = 'playground-item';
+            newItem.textContent = `Item ${itemCount}`;
+            playground.appendChild(newItem);
+            showToast(`✓ Item ${itemCount} ditambahkan`);
+        }
+
+        // Email validation
+        const emailInput = document.getElementById('email-input');
+        const emailSuccess = document.getElementById('email-success');
+
+        emailInput.addEventListener('input', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(this.value)) {
+                this.classList.remove('error');
+                this.classList.add('success');
+                emailSuccess.style.display = 'flex';
+            } else {
+                this.classList.remove('success');
+                emailSuccess.style.display = 'none';
+            }
+        });
+
+        // UX Laws Modal
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+
+        const uxLawsContent = {
+            hicks: {
+                title: "Hick's Law",
+                content: `
+                    <p><strong>Definisi:</strong> Waktu yang dibutuhkan untuk membuat keputusan meningkat secara logaritmik seiring dengan jumlah pilihan yang tersedia.</p>
+                    
+                    <div class="modal-example">
+                        <div class="modal-example-title">📱 Contoh Aplikasi Nyata</div>
+                        <p><strong>Menu Navigasi yang Baik (Netflix):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Kategori utama terbatas: Home, TV Shows, Movies, My List</li>
+                            <li>Sub-kategori muncul setelah hover/klik</li>
+                            <li>Mengurangi cognitive load di level pertama</li>
+                        </ul>
+                        
+                        <p style="margin-top: 16px;"><strong>Menu yang Buruk:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>20+ pilihan menu di navbar sekaligus</li>
+                            <li>User kewalahan dan lambat mengambil keputusan</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-example">
+                        <div class="modal-example-title">💡 Implementasi di Figma</div>
+                        <p>Dalam desain form atau dashboard:</p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Batasi pilihan utama maksimal 5-7 item</li>
+                            <li>Gunakan progressive disclosure untuk opsi lanjutan</li>
+                            <li>Group related actions dalam dropdown/menu tersembunyi</li>
+                        </ul>
+                    </div>
+                `
+            },
+            fitts: {
+                title: "Fitts's Law",
+                content: `
+                    <p><strong>Definisi:</strong> Waktu untuk mencapai target bergantung pada jarak ke target dan ukuran target. Target yang lebih besar dan lebih dekat lebih mudah dan cepat dijangkau.</p>
+                    
+                    <div class="modal-example">
+                        <div class="modal-example-title">📱 Contoh Aplikasi Nyata</div>
+                        <p><strong>Mobile App Design (Instagram):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Tombol "Post" besar dan di posisi mudah dijangkau jempol</li>
+                            <li>Like button cukup besar (44x44px minimum untuk touch target)</li>
+                            <li>Action buttons utama di bottom navigation</li>
+                        </ul>
+                        
+                        <p style="margin-top: 16px;"><strong>Desktop Design:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Primary CTA button lebih besar dari secondary</li>
+                            <li>Posisi di area yang natural (kanan bawah untuk submit)</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-example">
+                        <div class="modal-example-title">💡 Best Practices</div>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Minimum touch target: 44x44px (iOS), 48x48dp (Android)</li>
+                            <li>Tambahkan padding di sekitar clickable area</li>
+                            <li>Tombol penting lebih besar dari tombol sekunder</li>
+                            <li>Gunakan edge & corner untuk frequently used items</li>
+                        </ul>
+                    </div>
+                `
+            },
+            jakob: {
+                title: "Jakob's Law",
+                content: `
+                    <p><strong>Definisi:</strong> Pengguna menghabiskan sebagian besar waktu mereka di situs/aplikasi lain. Mereka lebih suka situs Anda bekerja dengan cara yang sama seperti situs yang sudah mereka kenal.</p>
+                    
+                    <div class="modal-example">
+                        <div class="modal-example-title">📱 Contoh Pola Umum</div>
+                        <p><strong>E-commerce (Amazon, Tokopedia, Shopee):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Search bar di atas tengah/kanan</li>
+                            <li>Cart icon di kanan atas dengan badge jumlah</li>
+                            <li>Filter di sidebar kiri</li>
+                            <li>Product grid/list di area utama</li>
+                        </ul>
+                        
+                        <p style="margin-top: 16px;"><strong>Social Media:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Feed infinite scroll</li>
+                            <li>Like/comment/share di bawah post</li>
+                            <li>Profile di pojok kanan atas</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-example">
+                        <div class="modal-example-title">⚠️ Kapan Boleh Inovasi</div>
+                        <p>Inovasi diperbolehkan ketika:</p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Memberikan value signifikan yang jelas</li>
+                            <li>Target audience adalah early adopters</li>
+                            <li>Ada onboarding yang baik untuk pola baru</li>
+                            <li>Sudah di-test dengan user research</li>
+                        </ul>
+                    </div>
+                `
+            },
+            miller: {
+                title: "Miller's Law",
+                content: `
+                    <p><strong>Definisi:</strong> Rata-rata orang hanya dapat menyimpan 7±2 item dalam memori kerja mereka.</p>
+                    
+                    <div class="modal-example">
+                        <div class="modal-example-title">📱 Contoh Aplikasi</div>
+                        <p><strong>Navigation Menu:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Batasi menu utama maksimal 5-7 item</li>
+                            <li>Contoh baik: Home, Products, About, Contact, Blog</li>
+                            <li>Hindari: 15 menu items di navbar</li>
+                        </ul>
+                        
+                        <p style="margin-top: 16px;"><strong>Form Design:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Break long forms ke beberapa steps (multi-step form)</li>
+                            <li>Grouping related fields</li>
+                            <li>Progress indicator untuk tracking</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-example">
+                        <div class="modal-example-title">💡 Chunking Strategy</div>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Group related items together</li>
+                            <li>Use visual separators (spacing, borders)</li>
+                            <li>Phone: 0812-3456-7890 (chunked) vs 08123456790</li>
+                            <li>Cards untuk separate content chunks</li>
+                        </ul>
+                    </div>
+                `
+            },
+            gestalt: {
+                title: "Gestalt Principles",
+                content: `
+                    <p><strong>Definisi:</strong> Manusia secara natural mengelompokkan elemen visual berdasarkan pola tertentu.</p>
+                    
+                    <div class="modal-example">
+                        <div class="modal-example-title">📱 Prinsip Utama</div>
+                        <p><strong>1. Proximity (Kedekatan):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Elemen yang dekat dianggap terkait</li>
+                            <li>Contoh: Label dan input field</li>
+                            <li>Space between groups > space within groups</li>
+                        </ul>
+                        
+                        <p style="margin-top: 16px;"><strong>2. Similarity (Kesamaan):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Elemen dengan warna/bentuk sama dianggap serupa</li>
+                            <li>Contoh: Semua primary buttons berwarna biru</li>
+                            <li>Consistent styling untuk similar elements</li>
+                        </ul>
+
+                        <p style="margin-top: 16px;"><strong>3. Continuity (Kontinuitas):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Mata mengikuti garis/kurva yang berkelanjutan</li>
+                            <li>Contoh: Timeline, progress bar</li>
+                        </ul>
+
+                        <p style="margin-top: 16px;"><strong>4. Closure (Penutupan):</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Otak melengkapi bentuk yang tidak sempurna</li>
+                            <li>Contoh: Logo dengan space negatif</li>
+                        </ul>
+                    </div>
+                `
+            },
+            proximity: {
+                title: "Law of Proximity",
+                content: `
+                    <p><strong>Definisi:</strong> Elemen yang ditempatkan berdekatan dianggap sebagai satu kelompok yang terkait.</p>
+                    
+                    <div class="modal-example">
+                        <div class="modal-example-title">📱 Contoh Praktis</div>
+                        <p><strong>Form Layout:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Label dekat dengan input field-nya (8px)</li>
+                            <li>Space antar form groups lebih besar (24px)</li>
+                            <li>Related fields dikelompokkan bersama</li>
+                        </ul>
+                        
+                        <p style="margin-top: 16px;"><strong>Card Design:</strong></p>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Image, title, description dalam satu card</li>
+                            <li>Spacing dalam card lebih kecil dari spacing antar card</li>
+                            <li>Action buttons di bagian bawah card</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-example">
+                        <div class="modal-example-title">💡 Spacing System</div>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Within component: 4px, 8px</li>
+                            <li>Between related components: 12px, 16px</li>
+                            <li>Between sections: 24px, 32px, 48px</li>
+                            <li>Use consistent spacing scale</li>
+                        </ul>
+                    </div>
+                `
+            }
+        };
+
+        function showUXLaw(lawKey) {
+            const law = uxLawsContent[lawKey];
+            modalTitle.textContent = law.title;
+            modalBody.innerHTML = law.content;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Mobile Inspector Toggle
+        const mobileInspectorToggle = document.getElementById('mobile-inspector-toggle');
+        const inspectorPanel = document.getElementById('inspector-panel');
+
+        if (window.innerWidth <= 1024) {
+            mobileInspectorToggle.style.display = 'block';
+        }
+
+        mobileInspectorToggle.addEventListener('click', () => {
+            inspectorPanel.classList.toggle('mobile-open');
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 1024) {
+                mobileInspectorToggle.style.display = 'block';
+            } else {
+                mobileInspectorToggle.style.display = 'none';
+                inspectorPanel.classList.remove('mobile-open');
+            }
+        });
+
+        // Initialize
         updateLayout();
+
+        // Show welcome toast
+        setTimeout(() => {
+            showToast('👋 Selamat datang! Eksplorasi Auto Layout dan UX Laws');
+        }, 500);
     </script>
 </body>
 </html>
